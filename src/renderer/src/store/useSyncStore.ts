@@ -151,13 +151,21 @@ export const useSyncStore = create<SyncStateStore>((set, get) => ({
       set((state) => {
         const newMap = new Map(state.syncStates)
         const toolInfos = get().toolInfos
-        const updated = toolInfos
-          .filter((t) => t.isInstalled)
-          .map((t) => ({
+        const existing = newMap.get(skillId) || []
+        const updated = toolInfos.map((t) => {
+          const existingState = existing.find((s) => s.toolType === t.type)
+          if (t.isInstalled) {
+            return {
+              toolType: t.type,
+              status: SyncStatus.SYNCED,
+              lastSyncAt: Date.now()
+            }
+          }
+          return existingState || {
             toolType: t.type,
-            status: SyncStatus.SYNCED,
-            lastSyncAt: Date.now()
-          }))
+            status: SyncStatus.UNSYNCED
+          }
+        })
         newMap.set(skillId, updated)
         return { syncStates: newMap, isLoading: false }
       })

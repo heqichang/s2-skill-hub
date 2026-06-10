@@ -85,7 +85,9 @@ export function SkillDetail() {
       await syncSkillToTool(selectedSkillId, toolType)
       success('同步成功')
     } catch (err) {
-      error('同步失败')
+      const errMsg = err instanceof Error ? err.message : '同步失败'
+      error(`同步失败: ${errMsg}`)
+      console.error('同步失败详情:', err)
     } finally {
       setSyncLoading(null)
     }
@@ -98,7 +100,9 @@ export function SkillDetail() {
       await syncSkillToAllTools(selectedSkillId)
       success('同步到所有工具成功')
     } catch (err) {
-      error('同步失败')
+      const errMsg = err instanceof Error ? err.message : '同步失败'
+      error(`同步失败: ${errMsg}`)
+      console.error('同步失败详情:', err)
     } finally {
       setSyncLoading(null)
     }

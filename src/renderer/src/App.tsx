@@ -31,10 +31,14 @@ function App() {
             setShowOnboarding(true)
           } else {
             await checkRepoInitialized()
+            await fetchSkills()
+            await fetchCategories()
           }
         }
       } else {
         await checkRepoInitialized()
+        await fetchSkills()
+        await fetchCategories()
       }
     } catch (err) {
       console.error('检查首次启动失败:', err)

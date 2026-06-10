@@ -61,25 +61,31 @@ export class SyncService {
   async syncSkillToTool(skillId: string, toolType: ToolType): Promise<void> {
     const adapter = this.adapters.find((a) => a.toolType === toolType)
     if (!adapter) {
-      throw new Error(`Adapter for tool type ${toolType} not found`)
+      throw new Error(`未找到 ${toolType} 的适配器`)
     }
 
     const skill = await this.skillRepo.getSkill(skillId)
     if (!skill) {
-      throw new Error(`Skill with id ${skillId} not found`)
+      throw new Error(`未找到 ID 为 ${skillId} 的技能`)
     }
 
     const isInstalled = await adapter.isInstalled()
     if (!isInstalled) {
-      throw new Error(`Tool ${toolType} is not installed`)
+      throw new Error(`${adapter.toolName} 未安装，请先安装该工具`)
     }
 
     const skillDir = await adapter.detectSkillDir()
     if (!skillDir) {
-      throw new Error(`Could not detect skill directory for ${toolType}`)
+      throw new Error(`未检测到 ${adapter.toolName} 的技能目录，请在设置中手动配置`)
     }
 
-    await adapter.syncSkill(skill, skillDir)
+    try {
+      await adapter.syncSkill(skill, skillDir)
+    } catch (err) {
+      const errMsg = err instanceof Error ? err.message : String(err)
+      throw new Error(`同步到 ${adapter.toolName} 失败: ${errMsg}`)
+    }
+
     await this.updateSyncState(skillId, toolType, skill)
   }
 

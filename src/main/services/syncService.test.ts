@@ -106,7 +106,7 @@ describe('SyncService', () => {
 
     it('should throw error for non-existent skill', async () => {
       await expect(syncService.syncSkillToTool('non-existent-id', ToolType.TRAE)).rejects.toThrow(
-        'Skill with id non-existent-id not found'
+        '未找到 ID 为 non-existent-id 的技能'
       )
     })
 
@@ -122,7 +122,7 @@ describe('SyncService', () => {
       adapter.setInstalled(false)
 
       await expect(syncService.syncSkillToTool(skill.id, ToolType.TRAE)).rejects.toThrow(
-        `Tool ${ToolType.TRAE} is not installed`
+        '未安装，请先安装该工具'
       )
     })
   })

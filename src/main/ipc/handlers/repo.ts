@@ -34,6 +34,11 @@ export function registerRepoHandlers(): void {
         await serviceManager.reinitializeServices()
         const skillRepo = serviceManager.getSkillRepositoryService()
         await skillRepo.init()
+        const gitService = serviceManager.getGitService()
+        const isRepo = await gitService.isRepo()
+        if (!isRepo) {
+          await gitService.init()
+        }
         return success(undefined as unknown as void)
       } catch (err) {
         return handleError(err, 'REPO_INIT_ERROR')

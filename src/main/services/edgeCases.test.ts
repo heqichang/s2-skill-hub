@@ -274,7 +274,7 @@ Code block
       await skillRepo.init()
       const syncService = new SyncService(tempDir, [new MockAdapter(true, toolDir)])
       await expect(syncService.syncSkillToTool('non-existent-id', ToolType.TRAE)).rejects.toThrow(
-        'not found'
+        '未找到 ID 为 non-existent-id 的技能'
       )
     })
 
@@ -310,7 +310,7 @@ Code block
       const syncService = new SyncService(tempDir, [mockAdapter])
 
       await expect(syncService.syncSkillToTool(skill.id, ToolType.TRAE)).rejects.toThrow(
-        'not installed'
+        '未安装，请先安装该工具'
       )
     })
 
