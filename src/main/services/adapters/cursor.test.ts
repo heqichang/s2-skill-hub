@@ -95,17 +95,19 @@ describe('CursorAdapter', () => {
       process.env.APPDATA = originalAppData
     })
 
-    it('should return true when Cursor directory exists', async () => {
-      const originalAppData = process.env.APPDATA
-      process.env.APPDATA = tempDir
+    it('should return true when Cursor executable exists', async () => {
+      const originalLocalAppData = process.env.LOCALAPPDATA
+      process.env.LOCALAPPDATA = tempDir
 
-      const cursorDir = join(tempDir, 'Cursor')
+      const cursorDir = join(tempDir, 'Programs', 'Cursor')
       await mkdir(cursorDir, { recursive: true })
+      const { writeFile } = await import('node:fs/promises')
+      await writeFile(join(cursorDir, 'Cursor.exe'), '')
 
       const result = await adapter.isInstalled()
       expect(result).toBe(true)
 
-      process.env.APPDATA = originalAppData
+      process.env.LOCALAPPDATA = originalLocalAppData
     })
   })
 

@@ -95,17 +95,19 @@ describe('TraeAdapter', () => {
       process.env.APPDATA = originalAppData
     })
 
-    it('should return true when Trae directory exists', async () => {
-      const originalAppData = process.env.APPDATA
-      process.env.APPDATA = tempDir
+    it('should return true when Trae executable exists', async () => {
+      const originalLocalAppData = process.env.LOCALAPPDATA
+      process.env.LOCALAPPDATA = tempDir
 
-      const traeDir = join(tempDir, 'Trae')
+      const traeDir = join(tempDir, 'Programs', 'Trae')
       await mkdir(traeDir, { recursive: true })
+      const { writeFile } = await import('node:fs/promises')
+      await writeFile(join(traeDir, 'Trae.exe'), '')
 
       const result = await adapter.isInstalled()
       expect(result).toBe(true)
 
-      process.env.APPDATA = originalAppData
+      process.env.LOCALAPPDATA = originalLocalAppData
     })
   })
 

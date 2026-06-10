@@ -68,7 +68,11 @@ export class SkillRepositoryService {
       ])
 
       const metadata = JSON.parse(metadataRaw) as SkillMetadata
-      return { ...metadata, content }
+      return {
+        ...metadata,
+        tags: metadata.tags || [],
+        content
+      }
     } catch (error) {
       if ((error as NodeJS.ErrnoException).code === 'ENOENT') {
         return null
@@ -82,6 +86,7 @@ export class SkillRepositoryService {
     const id = randomUUID()
     const skill: Skill = {
       ...data,
+      tags: data.tags || [],
       id,
       createdAt: now,
       updatedAt: now

@@ -258,7 +258,7 @@ export const useSkillStore = create<SkillState>((set, get) => ({
         (skill) =>
           skill.name.toLowerCase().includes(query) ||
           skill.description.toLowerCase().includes(query) ||
-          skill.tags.some((tag) => tag.toLowerCase().includes(query))
+          (skill.tags || []).some((tag) => tag.toLowerCase().includes(query))
       )
     }
 
@@ -268,7 +268,7 @@ export const useSkillStore = create<SkillState>((set, get) => ({
 
     if (state.selectedTags.length > 0) {
       filtered = filtered.filter((skill) =>
-        state.selectedTags.every((tag) => skill.tags.includes(tag))
+        state.selectedTags.every((tag) => (skill.tags || []).includes(tag))
       )
     }
 
@@ -279,14 +279,15 @@ export const useSkillStore = create<SkillState>((set, get) => ({
     const state = get()
     const tagSet = new Set<string>()
     state.skills.forEach((skill) => {
-      skill.tags.forEach((tag) => tagSet.add(tag))
+      const tags = skill.tags || []
+      tags.forEach((tag) => tagSet.add(tag))
     })
     return Array.from(tagSet).sort((a, b) => get().getTagCount(b) - get().getTagCount(a))
   },
 
   getTagCount: (tag: string) => {
     const state = get()
-    return state.skills.filter((skill) => skill.tags.includes(tag)).length
+    return state.skills.filter((skill) => (skill.tags || []).includes(tag)).length
   },
 
   getCategoryCount: (categoryName: string) => {
