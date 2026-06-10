@@ -1,0 +1,18 @@
+.modal {
+}
+
+.form {
+  margin-top: 16px;
+}
+
+.contentSection {
+  margin-top: 24px;
+}
+
+.contentLabel {
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.88);
+  margin-bottom: 8px;
+  display: block;
+}

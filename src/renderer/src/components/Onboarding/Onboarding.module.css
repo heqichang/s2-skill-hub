@@ -1,0 +1,197 @@
+.container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.content {
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+:global(.dark) .content {
+  background: #1f1f1f;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.steps {
+  margin-bottom: 32px;
+}
+
+.stepContentContainer {
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 24px;
+}
+
+.welcomeSection {
+  text-align: center;
+  padding: 20px 0;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 24px;
+  background: linear-gradient(135deg, #e6f7ff 0%, #bae7ff 100%);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.featureCard {
+  text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  padding: 20px 12px;
+  background: rgba(0, 0, 0, 0.02);
+}
+
+:global(.dark) .featureCard {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.stepContent {
+  padding: 10px 0;
+}
+
+.formSection {
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 12px;
+  padding: 20px;
+}
+
+:global(.dark) .formSection {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.formLabel {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.statusRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.successTip {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f6ffed;
+  border: 1px solid #b7eb8f;
+  border-radius: 8px;
+  margin-top: 16px;
+}
+
+:global(.dark) .successTip {
+  background: rgba(82, 196, 26, 0.1);
+  border-color: rgba(82, 196, 26, 0.3);
+}
+
+.toolList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.toolItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+:global(.dark) .toolItem {
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.toolIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 600;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.toolInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.toolName {
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.emptyTip {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.completeSection {
+  text-align: center;
+}
+
+.summary {
+  text-align: left;
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+:global(.dark) .summary {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.summaryItem {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+:global(.dark) .footer {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
