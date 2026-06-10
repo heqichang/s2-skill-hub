@@ -63,7 +63,7 @@ export const useSyncStore = create<SyncStateStore>((set, get) => ({
           })
           return
         }
-        throw new Error(response.error.message)
+        console.error('获取同步状态失败:', response.error.message)
       }
       await new Promise((resolve) => setTimeout(resolve, 150))
       const states = createMockSyncStates(skillId)
@@ -73,7 +73,17 @@ export const useSyncStore = create<SyncStateStore>((set, get) => ({
         return { syncStates: newMap, isLoading: false }
       })
     } catch (error) {
-      set({ error: error instanceof Error ? error.message : '获取同步状态失败', isLoading: false })
+      console.error('获取同步状态异常:', error)
+      set((state) => {
+        const newMap = new Map(state.syncStates)
+        const defaultStates: SyncState[] = [
+          { toolType: ToolType.CLAUDE, status: SyncStatus.UNSYNCED },
+          { toolType: ToolType.CURSOR, status: SyncStatus.UNSYNCED },
+          { toolType: ToolType.TRAE, status: SyncStatus.UNSYNCED }
+        ]
+        newMap.set(skillId, defaultStates)
+        return { syncStates: newMap, isLoading: false }
+      })
     }
   },
 

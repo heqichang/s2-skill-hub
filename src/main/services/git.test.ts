@@ -302,13 +302,13 @@ describe('GitService', () => {
       expect(diff).toContain('+initial content')
     })
 
-    it('should return empty string for unchanged file', async () => {
+    it('should return placeholder for unchanged file', async () => {
       await service.init()
       await writeFile(join(tempDir, 'test.txt'), 'content')
       await service.commit('Initial')
 
       const diff = await service.getFileDiff('test.txt')
-      expect(diff).toBe('')
+      expect(diff).toContain('暂无差异')
     })
   })
 

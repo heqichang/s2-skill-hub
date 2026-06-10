@@ -32,6 +32,8 @@ export class ServiceManager {
       this.categoryService = new CategoryService(config.repoPath)
       this.gitService = new GitService(config.repoPath)
       this.syncService = new SyncService(config.repoPath, this.adapters)
+
+      await this.skillRepositoryService.init()
     }
 
     this.initialized = true
@@ -47,6 +49,8 @@ export class ServiceManager {
       this.categoryService = new CategoryService(config.repoPath)
       this.gitService = new GitService(config.repoPath)
       this.syncService = new SyncService(config.repoPath, this.adapters)
+
+      await this.skillRepositoryService.init()
     } else {
       this.skillRepositoryService = null
       this.categoryService = null

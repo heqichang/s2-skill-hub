@@ -172,6 +172,15 @@ export class GitService {
         }
       } else {
         diffOutput = await git.diff(['--stat'])
+        const status = await git.status()
+        const untrackedFiles = status.files.filter(
+          (f) => f.working_dir === '?' || f.index === '?'
+        )
+        for (const f of untrackedFiles) {
+          if (!diffOutput.includes(f.path)) {
+            diffOutput += `\n ${f.path} | 0\n`
+          }
+        }
       }
 
       return this.parseDiffStat(diffOutput)
@@ -186,11 +195,47 @@ export class GitService {
       if (hash) {
         const history = await this.getHistory()
         if (history.length <= 1 || history[history.length - 1].hash === hash) {
-          return await git.show([hash, '--', filePath])
+          try {
+            return await git.show([hash, '--', filePath])
+          } catch {
+            return `--- /dev/null\n+++ b/${filePath}\n@@ -0,0 +1 @@\n(文件内容在首次提交中)`
+          }
         }
         return await git.diff([`${hash}^..${hash}`, '--', filePath])
       }
-      return await git.diff(['--', filePath])
+
+      const status = await git.status()
+      const isUntracked = status.not_added.includes(filePath) ||
+        status.files.some((f) => f.path === filePath && (f.working_dir === '?' || f.index === '?'))
+
+      if (isUntracked) {
+        try {
+          const { readFile } = await import('node:fs/promises')
+          const { join } = await import('node:path')
+          const fullPath = join(this.repoPath, filePath)
+          const content = await readFile(fullPath, 'utf-8')
+          const lines = content.split('\n')
+          let diffContent = `--- /dev/null\n+++ b/${filePath}\n@@ -0,0 +1,${lines.length} @@\n`
+          for (const line of lines) {
+            diffContent += `+${line}\n`
+          }
+          return diffContent
+        } catch {
+          return `(无法读取文件: ${filePath})`
+        }
+      }
+
+      const diffOutput = await git.diff(['--', filePath])
+      if (diffOutput.trim()) {
+        return diffOutput
+      }
+
+      const stagedDiff = await git.diff(['--cached', '--', filePath])
+      if (stagedDiff.trim()) {
+        return stagedDiff
+      }
+
+      return `(暂无差异: ${filePath})`
     } catch (error) {
       throw new Error(`Failed to get file diff: ${(error as Error).message}`)
     }
